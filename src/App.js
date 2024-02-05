@@ -2,6 +2,8 @@ import { useReducer } from "react";
 import Header from "./Header";
 import Main from "./main";
 import { useEffect } from "react";
+import Loader from "./Loader";
+import Error from "./Error";
 
 const initialState = {
   questions: [],
@@ -20,7 +22,7 @@ function reducer(state, action) {
     case "dataFailed":
       return {
         ...state,
-        status: "Error",
+        status: "error",
       };
     default:
       throw new Error("Action unknown");
@@ -28,7 +30,7 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [state, dispacth] = useReducer(reducer, initialState);
+  const [{ questions, status }, dispacth] = useReducer(reducer, initialState);
 
   useEffect(function () {
     fetch("http://localhost:8000/questions")
@@ -41,9 +43,7 @@ export default function App() {
     <div className="app">
       <Header />
       <Main>
-        <p>1/15</p>
-        <p>Question?</p>
-        <p>Hello World</p>
+        {status === "loading" && <Loader />} {status === "error" && <Error />}
       </Main>
     </div>
   );
