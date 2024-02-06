@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import Loader from "./Loader";
 import Error from "./Error";
 import StartScreen from "./StartScreen";
+import Question from "./Question";
 
 const initialState = {
   questions: [],
@@ -25,6 +26,8 @@ function reducer(state, action) {
         ...state,
         status: "error",
       };
+    case "start":
+      return { ...state, status: "active" };
     default:
       throw new Error("Action unknown");
   }
@@ -45,7 +48,10 @@ export default function App() {
       <Header />
       <Main>
         {status === "loading" && <Loader />} {status === "error" && <Error />}
-        {status === "ready" && <StartScreen numQuestion={numQuestion} />}
+        {status === "ready" && (
+          <StartScreen numQuestion={numQuestion} dispatch={dispacth} />
+        )}
+        {status === "active" && <Question />}
       </Main>
     </div>
   );
