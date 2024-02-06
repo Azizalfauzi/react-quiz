@@ -11,6 +11,7 @@ const initialState = {
   questions: [],
   // loading,error,ready,active,finished
   status: "loading",
+  index: 0,
 };
 
 function reducer(state, action) {
@@ -34,7 +35,10 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [{ questions, status }, dispacth] = useReducer(reducer, initialState);
+  const [{ questions, status, index }, dispacth] = useReducer(
+    reducer,
+    initialState
+  );
   const numQuestion = questions.length;
   useEffect(function () {
     fetch("http://localhost:8000/questions")
@@ -51,7 +55,7 @@ export default function App() {
         {status === "ready" && (
           <StartScreen numQuestion={numQuestion} dispatch={dispacth} />
         )}
-        {status === "active" && <Question />}
+        {status === "active" && <Question question={questions[index]} />}
       </Main>
     </div>
   );
