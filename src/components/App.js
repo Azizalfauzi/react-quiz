@@ -12,6 +12,7 @@ const initialState = {
   // loading,error,ready,active,finished
   status: "loading",
   index: 0,
+  answer: null,
 };
 
 function reducer(state, action) {
@@ -27,6 +28,11 @@ function reducer(state, action) {
         ...state,
         status: "error",
       };
+    case "newAnswer":
+      return {
+        ...state,
+        answer: action.payload,
+      };
     case "start":
       return { ...state, status: "active" };
     default:
@@ -35,7 +41,7 @@ function reducer(state, action) {
 }
 
 export default function App() {
-  const [{ questions, status, index }, dispacth] = useReducer(
+  const [{ questions, status, index, answer }, dispatch] = useReducer(
     reducer,
     initialState
   );
@@ -43,8 +49,8 @@ export default function App() {
   useEffect(function () {
     fetch("http://localhost:8000/questions")
       .then((res) => res.json())
-      .then((data) => dispacth({ type: "dataReceived", payload: data }))
-      .catch((err) => dispacth({ type: "dataFailed" }));
+      .then((data) => dispatch({ type: "dataReceived", payload: data }))
+      .catch((err) => dispatch({ type: "dataFailed" }));
   }, []);
 
   return (
@@ -53,9 +59,15 @@ export default function App() {
       <Main>
         {status === "loading" && <Loader />} {status === "error" && <Error />}
         {status === "ready" && (
-          <StartScreen numQuestion={numQuestion} dispatch={dispacth} />
+          <StartScreen numQuestion={numQuestion} dispatch={dispatch} />
         )}
-        {status === "active" && <Question question={questions[index]} />}
+        {status === "active" && (
+          <Question
+            question={questions[index]}
+            dispatch={dispatch}
+            answer={answer}
+          />
+        )}
       </Main>
     </div>
   );
