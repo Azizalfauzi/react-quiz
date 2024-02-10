@@ -95,8 +95,8 @@ export default function App() {
             <NextButton
               dispatch={dispatch}
               answer={answer}
-              numQuestions={numQuestion}
               index={index}
+              numQuestion={numQuestion}
             />
           </>
         )}
