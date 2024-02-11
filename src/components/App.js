@@ -60,7 +60,11 @@ function reducer(state, action) {
     case "restart":
       return { ...initialState, question: state.questions, status: "ready" };
     case "tick":
-      return { ...state, secondRemaining: state.secondRemaining - 1 };
+      return {
+        ...state,
+        secondRemaining: state.secondRemaining - 1,
+        status: state.secondRemaining === 0 ? "finished" : state.status,
+      };
     // return { ...state, points: 0, highScore: 0, index: 0 };
     default:
       throw new Error("Action unknown");
