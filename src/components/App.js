@@ -11,6 +11,7 @@ import Progress from "./Progress";
 import FinishedScreen from "./FinishedScreen";
 import Footer from "./Footer";
 import Timer from "./Timer";
+const SECS_PER_QUESTION = 30;
 
 const initialState = {
   questions: [],
@@ -20,7 +21,7 @@ const initialState = {
   answer: null,
   points: 0,
   highScore: 0,
-  secondRemaining: 10,
+  secondRemaining: null,
 };
 
 function reducer(state, action) {
@@ -47,7 +48,11 @@ function reducer(state, action) {
             : state.points,
       };
     case "start":
-      return { ...state, status: "active" };
+      return {
+        ...state,
+        status: "active",
+        secondRemaining: state.questions.length * SECS_PER_QUESTION,
+      };
     case "nextQuestion":
       return { ...state, index: state.index + 1, answer: null };
     case "finish":
