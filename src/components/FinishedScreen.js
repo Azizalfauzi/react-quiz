@@ -1,9 +1,7 @@
-export default function FinishedScreen({
-  points,
-  maxPossiblePoints,
-  highScore,
-  dispatch,
-}) {
+import { useQuiz } from "../contexts/QuizContext";
+
+export default function FinishedScreen() {
+  const { points, maxPossiblePoints, highScore, dispatch } = useQuiz();
   const percentage = (points / maxPossiblePoints) * points;
   let emoji;
   if (percentage === 100) emoji = "🥇";
